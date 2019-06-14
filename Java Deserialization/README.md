@@ -16,4 +16,4 @@ The exploit parameters are:
 * "**-k**", "**--secretkey**": The secret key for encryption in OpenSSL.
 * "**-m**", "**--hmacKey**": The HMAC key for encoding the HMAC payload.
 * "**-p**", "**--payload-type**": The vulnerable Java payload.
-* "**-x**", "**--testrce**": The has been added in order to get a legit proof of concept, with the -x in place the -c "command" will be replaced by 3 pings to your own computer. While the pings will execute on the remote sysem our script starts listening on own computer for ping requests. The captured ping request will provide proof of remote code execution.
+* "**-x**", "**--testrce**": The test has been added in order to get a proof of concept. with the -x in place the -c "command" will be replaced by 3 pings to our own computer. While the pings will execute on the remote system our script starts listening on own computer for ping requests. The captured ping request will provide proof of remote code execution.
