@@ -4,10 +4,10 @@ Exploit developed by: **X4v1l0k** and **Rival23**
 
 This exploit is designed to be able to inject "cmd", "powershell" and "bash" commands, therefore it is compatible to take advantage of Java deserialization vulnerabilities in both Windows and Linux systems.
 
-In order to use it, we need to have certain information such as Java's vulnerable payload such as "CommonsCollections1", the HMAC key for encrypting our load, the key for SSL encryption, the type of shell we are going to inject, the command that we want to inject and a valid URL.
+In order to use it, we need to have certain information such as Java's vulnerable payload such as "CommonsCollections1", the HMAC key for encrypting our load, the type of shell we are going to inject, the command that we want to inject and a valid URL.
 
 The structure of the command should be similar to:
-- python RCE-Java_Deserialization.py -u websiteurl/serializatedjava.faces -t cmd -k sslkey -m hmackey -p CommonsCollections1 -c "cmd command"
+- python RCE-Java_Deserialization.py -u websiteurl/serializatedjava.faces -t cmd -m hmackey -p CommonsCollections1 -c "cmd command"
 
 The exploit parameters are:
 * "**-u**", "**--targetURL**": A vulnerable serializad java URL.
