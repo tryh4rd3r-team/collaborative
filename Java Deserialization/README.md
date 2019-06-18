@@ -13,7 +13,6 @@ The exploit parameters are:
 * "**-u**", "**--targetURL**": A vulnerable serializad java URL.
 * "**-t**", "**--shellType**": The shell type to be injected (cmd, powershell, bash or none).
 * "**-c**", "**--command**": The command to be injected.
-* "**-k**", "**--secretkey**": The secret key for encryption in OpenSSL.
 * "**-m**", "**--hmacKey**": The HMAC key for encoding the HMAC payload.
 * "**-p**", "**--payload-type**": The vulnerable Java payload.
 * "**-x**", "**--testrce**": The test has been added in order to get a proof of concept. with the -x in place the -c "command" will be replaced by 3 pings to our own computer. While the pings will execute on the remote system our script starts listening on own computer for ping requests. The captured ping request will provide proof of remote code execution.
