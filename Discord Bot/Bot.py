@@ -1,9 +1,7 @@
 # Requirements
-import discord, sys, datetime, emoji, datetime
+import discord, sys, datetime, emoji, datetime, os
 from googletrans import Translator
 from discord.ext import commands
-
-import os
 
 
 #Declares
