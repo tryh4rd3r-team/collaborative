@@ -38,8 +38,6 @@ async def start(ctx):
 
 @bot.event
 async def on_ready():
-    #game = discord.Game("")
-    #await bot.change_presence(status=discord.Status.offline, activity=game)
     print('Ready.')
 
 
