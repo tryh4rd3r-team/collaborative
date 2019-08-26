@@ -9,8 +9,8 @@ import os
 #Declares
 bot = commands.Bot(command_prefix='!')
 client = discord.Client()
-Client_ID = "261197633870233603"
-Bot_ID = "475436451299852299"
+Client_ID = ""
+Bot_ID = ""
 Last_Channel = ""
 Content = ""
 date = datetime.datetime.now()
@@ -84,33 +84,4 @@ async def on_message(message):
 
 
 #Token Pruebas
-bot.run('NDc1NDM2NDUxMjk5ODUyMjk5.XVihaA.uHj5W4QVLMleCQ5-KjHBPBbXyiU')
-    Mention_ID = ""
-    Mention_Name = ""
-    Content = str(message.content)
-
-    if Client_ID in Content or Bot_ID in Content:
-        Mention = 1
-    else:
-        Mention = 0
-
-    for name, id in Clients.items():
-        if str(id) in Content:
-            Mention_ID = str(id)
-            Content = Content.replace('<@' + Mention_ID + '>', '@' + name)
-
-    if Last_Channel != message.channel.name:
-            print("")
-            print(Green + Bold + message.channel.name + NC)
-    if Mention == 1:
-        print("   " + Blue + Bold + Author + ": " + NC + Red + Bold + emoji.emojize(Content) + Orange + date + NC)
-    else:
-        print("   " + Blue + Bold + Author + ": " + NC + emoji.emojize(Content) + Orange + date + NC)
-        
-    Last_Channel = message.channel.name
-
-    await bot.process_commands(message)
-
-
-#Bot server Token
-bot.run('') #Fill with the token of your bot.
+bot.run('')
