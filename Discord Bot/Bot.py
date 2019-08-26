@@ -3,12 +3,14 @@ import discord, sys, datetime, emoji, datetime
 from googletrans import Translator
 from discord.ext import commands
 
+import os
+
 
 #Declares
 bot = commands.Bot(command_prefix='!')
 client = discord.Client()
-Client_ID = "" #Fill with your Clien ID
-Bot_ID = "" # Fill with your Bot Client ID
+Client_ID = "261197633870233603"
+Bot_ID = "475436451299852299"
 Last_Channel = ""
 Content = ""
 date = datetime.datetime.now()
@@ -38,6 +40,8 @@ async def start(ctx):
 
 @bot.event
 async def on_ready():
+    #game = discord.Game("")
+    #await bot.change_presence(status=discord.Status.offline, activity=game)
     print('Ready.')
 
 
@@ -48,6 +52,39 @@ async def on_message(message):
     global Content
     Mention = 0
     Author = message.author.name
+    Mention_ID = ""
+    Mention_Name = ""
+    try:
+        Content = str(message.attachments[0].url)
+        os.system("tiv " + Content + " -h 15")
+    except:
+        Content = str(message.content)
+
+    if Client_ID in Content or Bot_ID in Content:
+        Mention = 1
+    else:
+        Mention = 0
+
+    for name, id in Clients.items():
+        if str(id) in Content:
+            Mention_ID = str(id)
+            Content = Content.replace('<@' + Mention_ID + '>', '@' + name)
+
+    if Last_Channel != message.channel.name:
+            print("")
+            print(Green + Bold + message.channel.name + NC)
+    if Mention == 1:
+        print("   " + Blue + Bold + Author + ": " + NC + Red + Bold + emoji.emojize(Content) + Orange + date + NC)
+    else:
+        print("   " + Blue + Bold + Author + ": " + NC + emoji.emojize(Content) + Orange + date + NC)
+        
+    Last_Channel = message.channel.name
+
+    await bot.process_commands(message)
+
+
+#Token Pruebas
+bot.run('NDc1NDM2NDUxMjk5ODUyMjk5.XVihaA.uHj5W4QVLMleCQ5-KjHBPBbXyiU')
     Mention_ID = ""
     Mention_Name = ""
     Content = str(message.content)
