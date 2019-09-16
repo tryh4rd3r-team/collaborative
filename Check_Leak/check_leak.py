@@ -37,32 +37,38 @@ def get_arguments():
 		parser.OutFile = False
 	return options
 
+
 def set_para(options):
-	params = (
+	parameters = (
 		('q', options.Field + ":" + options.Query),
 		('num', options.Num),
 		# ('from', options.From),
 	)
-	return params
+	return parameters
 
-def Save_Result(json_data, line, cnt, fp):
-	for i in range(len(json_data)):
-		if 'Email' in json_data[i]["_source"]:
-			source = Red + "Email: " + Blue + json_data[i]["_source"]["Email"] + NC
-		elif 'User' in json_data[i]["_source"]:
-			source = Red + "User: " + Blue + json_data[i]["_source"]["User"] + NC
-		if 'Password' in json_data[i]["_source"]:
-			data = Red + "Password: " + Blue + json_data[i]["_source"]["Password"] + NC
-		elif 'PassHash' in json_data[i]["_source"]:
-			data = Red + "Hash: " + Blue + json_data[i]["_source"]["PassHash"] + NC
 
-		if json_data[i]["_score"] >= 4:
-			print("   " + Red + "Domain: " + Blue + json_data[i]["_source"]["Domain"] + NC + "\n" + "   " + source + "\n" + "   " + data + "\n")
+def save_result(data):
+	filePath = Options.OutFile
+	with open(filePath) as fp:
+		line = fp.readline()
+		cnt = 1
+		print(Green + Bold + "Results about " + line.strip() + ":" + NC)
+		for i in range(len(data)):
+			if 'Email' in data[i]["_source"]:
+				source = Red + "Email: " + Blue + data[i]["_source"]["Email"] + NC
+			elif 'User' in data[i]["_source"]:
+				source = Red + "User: " + Blue + data[i]["_source"]["User"] + NC
+			if 'Password' in data[i]["_source"]:
+				pass_data = Red + "Password: " + Blue + data[i]["_source"]["Password"] + NC
+			elif 'PassHash' in json_data[i]["_source"]:
+				pass_data = Red + "Hash: " + Blue + data[i]["_source"]["PassHash"] + NC
+			if json_data[i]["_score"] >= 4:
+				print("   " + Red + "Domain: " + Blue + data[i]["_source"]["Domain"] + NC + "\n" + "   " + source + "\n" + "   " + pass_data + "\n")
+		line = fp.readline()
+		cnt += 1
 
-	line = fp.readline()
-	cnt += 1
 
-def Print_Result(data_json):
+def print_result(data_json):
 	for i in range(len(data_json)):
 		if 'Email' in data_json[i]["_source"]:
 			source = Red + "Email: " + Blue + data_json[i]["_source"]["Email"] + NC
@@ -76,37 +82,33 @@ def Print_Result(data_json):
 		if data_json[i]["_score"] >= 4:
 			print("   " + Red + "Domain: " + Blue + data_json[i]["_source"]["Domain"] + NC + "\n" + "   " + source + "\n" + "   " + data + "\n")
 
+
 os.system("clear")
 
-Bold='\033[1m'
-Red='\033[0;31m'
-Magenta='\033[95m'
-Green='\033[0;32m'
-Blue='\033[0;94m'
-Cyan='\033[0;36m'
-Orange='\033[0;33m'
-NC='\033[0m' # No Color
+Bold = '\033[1m'
+Red = '\033[0;31m'
+Magenta = '\033[95m'
+Green = '\033[0;32m'
+Blue = '\033[0;94m'
+Cyan = '\033[0;36m'
+Orange = '\033[0;33m'
+NC = '\033[0m'    # No Color
 
 headers = {
 	'Accept': 'application/json',
 }
 
 Options = get_arguments()
-if Options.OutFile != False:
-	filepath = Options.OutFile
-	with open(filepath) as fp:
-		line = fp.readline()
-		cnt = 1
-		while line:
-			params = set_para(Options)
-			response = requests.get('https://scylla.sh/search', headers=headers, params=params)
-			print(Green + Bold + "Results about " + line.strip() + ":" + NC)
-			json_data = json.loads(response.text)
-			Save_Result(json_data, line, fp)
+if not Options.OutFile:
+	while True:
+		params = set_para(Options)
+		response = requests.get('https://scylla.sh/search', headers=headers, params=params)
+		json_data = json.loads(response.text)
+		save_result(json_data)
 
 else:
 	params = set_para(Options)
 	response = requests.get('https://scylla.sh/search', headers=headers, params=params)
 	print(Green + Bold + "Results about " + Options.Field + ":" + NC)
 	json_data = json.loads(response.text)
-	Print_Result(json_data)
+	print_result(json_data)
