@@ -77,7 +77,7 @@ else:
 	json_data = json.loads(response.text)
 
 	#This print is to get all data and test the output
-	print(response.text.replace(',"_type":"_doc"},', '\n\n').replace('","', '"\n"'))
+	#print(response.text.replace(',"_type":"_doc"},', '\n\n').replace('","', '"\n"'))
 
 	print(Green + Bold + "Results about " + sys.argv[2] + ":" + NC)
 
