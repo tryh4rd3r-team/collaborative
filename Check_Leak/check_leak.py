@@ -1,6 +1,4 @@
 #!/usr/bin/env python
-from argparse import ArgumentParser
-
 import requests
 import json
 import os
@@ -20,7 +18,7 @@ import argparse
 # - Domain
 
 def get_arguments():
-	parser: ArgumentParser = argparse.ArgumentParser()
+	parser = argparse.ArgumentParser()
 	parser.add_argument("-f", "-field", dest="Field", help="Field to search in.")
 	parser.add_argument("-q", "--query", dest="Query", help="Query to look for")
 	parser.add_argument("-n", "--num", dest="Num", help="Number of results to display")
