@@ -65,11 +65,14 @@ def get_arguments():
 			 - Username
 			 - PassHash
 			 - Domain
+			 
 		Additional Information:
 			Example search for passwords that start with ff
 			python check_leak.py -f Password -q ff*
+			
 	This would match any passwords for username dave, dale, dane, etc.
 			python check_leak.py -f Name -q da?e
+			
 	This would match any passwords with a d in them
 			python check_leak.py -f Password -q *d*
 	'''))
@@ -124,12 +127,12 @@ def save_result(data_json):
 		if 'Password' in data_json[i]["_source"]:
 			data = Red + "Password: " + Blue + data_json[i]["_source"]["Password"] + NC
 			is_hash = obtain_hash_type(data_json[i]["_source"]["Password"])
-			if is_hash != 0 and is_hash != None:
+			if is_hash != 0 and is_hash is not None:
 				data += Red + "\n   Hash Type: " + Blue + is_hash + NC
 		elif 'PassHash' in data_json[i]["_source"]:
 			data = Red + "Hash: " + Blue + data_json[i]["_source"]["PassHash"] + NC
 			is_hash = obtain_hash_type(data_json[i]["_source"]["PassHash"])
-			if is_hash != 0 and is_hash != None:
+			if is_hash != 0 and is_hash is not None:
 				data += Red + "\n   Hash Type: " + Blue + is_hash + NC
 		if data_json[i]["_score"] >= 4:
 			print("   " + Red + "Domain: " + Blue + data_json[i]["_source"]["Domain"] + NC + "\n" + "   " + source + "\n" + "   " + data + "\n")
