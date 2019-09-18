@@ -54,13 +54,28 @@ def get_arguments():
 		prog='Check_Leak.py',
 		formatter_class=argparse.RawDescriptionHelpFormatter,
 		epilog=textwrap.dedent('''\
+		AVAILABLE SEARCH
+ 			- IP
+			 - PassSalt
+			 - UserId
+			 - Name
+			 - Email
+			 - User
+			 - Password
+			 - Username
+			 - PassHash
+			 - Domain
+			 
 		Additional Information:
 			Example search for passwords that start with ff
 			python check_leak.py -f Password -q ff*
+			
 	This would match any passwords for username dave, dale, dane, etc.
 			python check_leak.py -f Name -q da?e
+			
 	This would match any passwords with a d in them
 			python check_leak.py -f Password -q *d*
+			
 	'''))
 	parser.add_argument("-f", "--field", dest="Field", help="Field to search in.")
 	parser.add_argument("-q", "--query", dest="Query", help="Query to look for")
@@ -69,7 +84,7 @@ def get_arguments():
 	parser.add_argument("-o", "--out-file", dest="OutFile", help="specify a file to save data to", default=False)
 	options = parser.parse_args()
 	if not options.Field:
-		parser.error("[-] Please Specify the searchfield, use -h or --help for more info")
+		parser.error("[-] Please Specify the search-field, use -h or --help for more info")
 	if not options.Query:
 		parser.error("[-] Please specify a value to look for, use -h or --help for more info")
 	return options
@@ -102,46 +117,25 @@ def set_para(options):
 	return parameters
 
 
-def save_result(data_json):
-	pathtofile = Options.OutFile
-	sys.stdout = open(pathtofile, 'w')
-	for i in range(len(data_json)):
-		if 'Email' in data_json[i]["_source"]:
-			source = Red + "Email: " + Blue + data_json[i]["_source"]["Email"] + NC
-		elif 'User' in data_json[i]["_source"]:
-			source = Red + "User: " + Blue + data_json[i]["_source"]["User"] + NC
-		if 'Password' in data_json[i]["_source"]:
-			data = Red + "Password: " + Blue + data_json[i]["_source"]["Password"] + NC
-			is_hash = obtain_hash_type(data_json[i]["_source"]["Password"])
-			if is_hash != 0 and is_hash != None:
-				data += Red + "\n   Hash Type: " + Blue + is_hash + NC
-		elif 'PassHash' in data_json[i]["_source"]:
-			data = Red + "Hash: " + Blue + data_json[i]["_source"]["PassHash"] + NC
-			is_hash = obtain_hash_type(data_json[i]["_source"]["PassHash"])
-			if is_hash != 0 and is_hash != None:
-				data += Red + "\n   Hash Type: " + Blue + is_hash + NC
-		if data_json[i]["_score"] >= 4:
-			print("   " + Red + "Domain: " + Blue + data_json[i]["_source"]["Domain"] + NC + "\n" + "   " + source + "\n" + "   " + data + "\n")
-
-
 def print_result(data_json):
 	for i in range(len(data_json)):
-		if 'Email' in data_json[i]["_source"]:
-			source = Red + "Email: " + Blue + data_json[i]["_source"]["Email"] + NC
-		elif 'User' in data_json[i]["_source"]:
-			source = Red + "User: " + Blue + data_json[i]["_source"]["User"] + NC
-		if 'Password' in data_json[i]["_source"]:
-			data = Red + "Password: " + Blue + data_json[i]["_source"]["Password"] + NC
-			is_hash = obtain_hash_type(data_json[i]["_source"]["Password"])
-			if is_hash != 0 and is_hash is not None:
-				data += Red + "\n   Hash Type: " + Blue + is_hash + NC
-		elif 'PassHash' in data_json[i]["_source"]:
-			data = Red + "Hash: " + Blue + data_json[i]["_source"]["PassHash"] + NC
-			is_hash = obtain_hash_type(data_json[i]["_source"]["PassHash"])
-			if is_hash != 0 and is_hash is not None:
-				data += Red + "\n   Hash Type: " + Blue + is_hash + NC
 		if data_json[i]["_score"] >= 4:
-			print("   " + Red + "Domain: " + Blue + data_json[i]["_source"]["Domain"] + NC + "\n" + "   " + source + "\n" + "   " + data + "\n")
+			if 'Email' in data_json[i]["_source"]:
+				source = Red + "Email: " + Blue + data_json[i]["_source"]["Email"] + NC
+			elif 'User' in data_json[i]["_source"]:
+				source = Red + "User: " + Blue + data_json[i]["_source"]["User"] + NC
+			if 'Password' in data_json[i]["_source"]:
+				data = Red + "Password: " + Blue + data_json[i]["_source"]["Password"] + NC
+				is_hash = obtain_hash_type(data_json[i]["_source"]["Password"])
+				if is_hash != 0 and is_hash is not None:
+					data += Red + "\n   Hash Type: " + Blue + is_hash + NC
+			elif 'PassHash' in data_json[i]["_source"]:
+				data = Red + "Hash: " + Blue + data_json[i]["_source"]["PassHash"] + NC
+				is_hash = obtain_hash_type(data_json[i]["_source"]["PassHash"])
+				if is_hash != 0 and is_hash is not None:
+					data += Red + "\n   Hash Type: " + Blue + is_hash + NC
+			if 'Domain' in data_json[i]["_source"]:
+				print("   " + Red + "Domain: " + Blue + data_json[i]["_source"]["Domain"] + NC + "\n" + "   " + source + "\n" + "   " + data + "\n")
 
 
 os.system("clear")
