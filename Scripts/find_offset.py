@@ -1,6 +1,6 @@
 import subprocess
 
-len = raw_input("\nEnter the pattern lenght: ")
+len = raw_input("\nEnter the pattern length: ")
 
 p1 = subprocess.Popen(['/usr/share/metasploit-framework/tools/exploit/pattern_create.rb', '-l', len], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 

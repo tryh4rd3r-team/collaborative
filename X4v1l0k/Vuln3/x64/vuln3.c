@@ -1,3 +1,5 @@
+//gcc -fno-stack-protector -z execstack vuln3.c -o vuln3
+
 #include <stdio.h>
 
 void secretFunction()
