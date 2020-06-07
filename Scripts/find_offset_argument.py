@@ -13,23 +13,18 @@ def get_arguments():
     return options
 
 
-
-
 options = get_arguments()
-len = options.length
+len = options.pattern_length
 
 filename = options.fullpath
 
-execute = os.popen(filename + '$(cyclic ' + len + ')')
+execute = os.popen(filename + '$(cyclic ' + str(len) + ')')
 
-address = os.popen('dmesg | tail -n 2 | head -n 1 | cut -d ' ' -f 6').read()
-
-#address = re.search('%s(.*)%s' % ('segfault at ', ' ip '), err).group(1)
+address = os.popen('dmesg | tail -n 2 | head -n 1 | cut -d \' \' -f 6').read()
 
 offset = os.popen('cyclic -l 0x' + address).read()
 
 sys.stdout.write("\033[F")
 sys.stdout.write("\033[K")
 
-print("\nThe offset is: " + offset)
 print("\nThe offset is: " + offset)

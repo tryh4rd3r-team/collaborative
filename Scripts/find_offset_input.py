@@ -13,15 +13,11 @@ def get_arguments():
     return options
 
 
-
-
 options = get_arguments()
-len = options.length
+len = options.pattern_length
 filename = options.fullpath
-execute = os.popen('cyclic ' + len + '|' + filename)
-address = os.popen('dmesg | tail -n 2 | head -n 1 | cut -d ' ' -f 6').read()
-
-#address = re.search('%s(.*)%s' % ('segfault at ', ' ip '), err).group(1)
+execute = os.popen('cyclic ' + str(len) + '|' + filename)
+address = os.popen('dmesg | tail -n 2 | head -n 1 | cut -d \' \' -f 6').read()
 
 offset = os.popen('cyclic -l 0x' + address).read()
 
