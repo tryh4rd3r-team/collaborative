@@ -1,9 +1,9 @@
-import subprocess
-import argparse
+import os, argparse
 
 def get_arguments():
     parser = argparse.ArgumentParser()
     parser.add_argument("-l", "--length", dest="pattern_length", help="Pattern Length.", type=int)
+    parser.add_argument("-p", "--path", dest="fullpath", help="absolute path to binary")
     parser.add_argument("-e", "--eip", dest="eip", help="hex value EIP")
     options = parser.parse_args()
     if not options.pattern_length:
@@ -16,19 +16,16 @@ def get_arguments():
 
 
 options = get_arguments()
-len = options.length
+len = options.pattern_length
 filename = options.fullpath
 
-p1 = subprocess.Popen(['/usr/share/metasploit-framework/tools/exploit/pattern_create.rb', '-l', len], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+pattern = os.popen('/usr/share/metasploit-framework/tools/exploit/pattern_create.rb -l ' + str(len)).read()
 
-pattern, err = p1.communicate()
+if not options.eip:
+    print("\nUse this pattern in GDB: \n" + pattern)
+else:
+    eip = options.eip
 
-print("\nUse this pattern in GDB: \n" + pattern)
+    offset = os.popen('/usr/share/metasploit-framework/tools/exploit/pattern_offset.rb -l ' + str(len) + ' -q ' + str(eip)).read()
 
-eip = options.eip
-
-p2 = subprocess.Popen(['/usr/share/metasploit-framework/tools/exploit/pattern_offset.rb', '-l', len, '-q', eip], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-
-offset, err = p2.communicate()
-
-print(offset + "\n")
+    print(offset + "\n")
